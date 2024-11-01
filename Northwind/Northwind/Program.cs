@@ -7,14 +7,16 @@ using OxyPlot.WindowsForms;
 using System.Windows.Forms;
 using System.Linq;
 using OxyPlot.Axes;
+using Northwind.Services;
 
 //Application.EnableVisualStyles();
 //Application.SetCompatibleTextRenderingDefault(false);
+var plotter = new Plotter();
 
 using (var context = new NorthwindContext())
 {
     Console.WriteLine("Hello, World!");
-    Console.WriteLine("Enter which Northwind Query you want to see: ");
+    Console.WriteLine("Press 1 to list Northwind Employees\nPress 2-7 for corresponding Northwind query or\nPress 8 for Barchart of Products per Category: ");
 
     switch (Console.ReadLine())
     {
@@ -47,8 +49,8 @@ using (var context = new NorthwindContext())
             ListTotalSalesFromEachDistinctCountry(context);
             break;
         case "8":
-            Console.WriteLine("PlotCategories: ");
-            PlotCategories(context);
+            Console.WriteLine("PlotCategories: products per category");
+            plotter.PlotCategories(context);
             break;
         default:
             break;
@@ -134,32 +136,4 @@ static void ListTotalSalesFromEachDistinctCountry(NorthwindContext context)
     {
         Console.WriteLine($"{country.ShipCountry} {country.TotalSales}");
     }
-}
-static void PlotCategories(NorthwindContext context)
-{
-    var categoryCounts = context.Categories
-        .Select(c=> new
-        {
-            CategoryName = c.CategoryName,
-            ProductCount = c.Products.Count(p=>p.CategoryId == c.CategoryId)
-        })
-        .ToList();
-
-    var model = new PlotModel { Title = "Products per Category" };
-    var barSeries = new BarSeries
-    {
-        Title = "Products"
-    };
-    foreach (var category in categoryCounts)
-    {
-        barSeries.Items.Add(new BarItem { Value = category.ProductCount });
-    }
-    model.Series.Add(barSeries);
-
-    var categoryAxis = new CategoryAxis { Position = AxisPosition.Left };
-    foreach (var category in categoryCounts)
-    {
-        categoryAxis.Labels.Add(category.CategoryName);
-    }
-    model.Axes.Add(categoryAxis);
 }
