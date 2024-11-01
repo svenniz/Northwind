@@ -8,10 +8,11 @@ using System.Windows.Forms;
 using System.Linq;
 using OxyPlot.Axes;
 using Northwind.Services;
+using Northwind.Services.Interfaces;
 
 //Application.EnableVisualStyles();
 //Application.SetCompatibleTextRenderingDefault(false);
-var plotter = new Plotter();
+IPlotter plotter = new Plotter();
 
 using (var context = new NorthwindContext())
 {

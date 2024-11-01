@@ -8,13 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OxyPlot.WindowsForms;
+using Northwind.Services.Interfaces;
 
 namespace Northwind.Services
 {
     /// <summary>
     /// Class using Oxyplot package to generate windows forms graphs and charts.
     /// </summary>
-    public class Plotter
+    public class Plotter : IPlotter
     {
         /// <summary>
         /// Function to plot products per category
